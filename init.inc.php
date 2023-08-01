@@ -18,6 +18,22 @@ class Config
         return self::$_config->{$k};
     }
 
+    public static function setIndexWithSecret($name)
+    {
+        foreach (self::$_config->indexes as $map) {
+            if ($map->oldindex == $name) {
+                putenv('ELASTIC_PASSWORD=' . $map->password);
+                putenv('ELASTIC_PREFIX=' . $map->prefix);
+                putenv('ELASTIC_URL=' . $map->url);
+                putenv('ELASTIC_USER=' . $map->user);
+                putenv('SEARCH_URL=' . $map->oldurl);
+                return;
+            }
+        }
+        echo '404';
+        exit;
+    }
+
     public static function setIndex($name)
     {
         foreach (self::$_config->indexes as $map) {
